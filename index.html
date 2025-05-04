@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Auto Location Google Form</title>
+    <script>
+      function getLocationAndSubmit() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Your base form URL
+            const baseFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSfHHx5pFymjd2WQkUbAfzh5-4-93mUpO9xiCWgSh5lkE0LeYw/viewform";
+
+            // Entry ID for the location field
+            const locationFieldEntry = "entry.1943159485";
+
+            // Build the final URL with location
+            const finalURL = `${baseFormURL}?${locationFieldEntry}=${encodeURIComponent(lat + "," + lon)}`;
+
+            // Load the form with pre-filled location
+            document.getElementById("formFrame").src = finalURL;
+          }, function(error) {
+            alert("Error getting location: " + error.message);
+          });
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+    </script>
+  </head>
+  <body onload="getLocationAndSubmit()">
+    <h2>Loading form with your location…</h2>
+    <iframe id="formFrame" width="100%" height="700px" frameborder="0"></iframe>
+  </body>
+</html>
